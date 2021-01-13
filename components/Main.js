@@ -17,6 +17,7 @@ export default function Main(
     weatherInFiveDays,
   }
 ) {
+  console.log(weatherInFiveDays)
   return (
     <MainStyles>
       <div>
@@ -24,6 +25,19 @@ export default function Main(
             <label htmlFor="checkbox">
                 <span>Search Location</span>
             </label>
+            <div>
+             <p>{weatherInFiveDays.consolidated_weather?.[0].the_temp}</p>
+             <p>{weatherInFiveDays.consolidated_weather?.[0].weather_state_name}</p>
+             <p>{weatherInFiveDays.consolidated_weather?.[0].applicable_date}</p>
+             {
+               weatherLocations.map(location => {
+                 return (
+                   <p>{location.title}</p>
+                 )
+               })
+             }
+            </div>
+            
             <Locations
             weatherLocations={weatherLocations}
             handleSearchForLocation={handleSearchForLocation}

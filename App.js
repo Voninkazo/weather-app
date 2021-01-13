@@ -6,17 +6,21 @@ export default function App () {
   const [ location, setLocation ] = useState('london')
   const [ weatherLocations, setWeatherLocations ] = useState([])
   const [weatherInFiveDays, setWeatherInFiveDays] = useState([])
+  // const [weatherDetail,setWeatherDetail] = useState([]);
 
   async function fetchLocation() {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`)
     const dataLocation = await res.json()
     setWeatherLocations(dataLocation)
+    console.log(weatherLocations)
 
-    if (weatherLocations.length) {
+    if (dataLocation.length) {
       console.log(dataLocation)
-      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${weatherLocations[0].woeid}`);
+      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
       const response = await res.json();
     setWeatherInFiveDays(response)
+    // setWeatherDetail(response);
+    // console.log(weatherDetail)
     }
   }
 
@@ -31,12 +35,15 @@ export default function App () {
     e.target.reset();
   }
 
+  console.log(weatherInFiveDays)
+
   return (
     <>
       <Main
         weatherLocations={weatherLocations}
         handleSearchForLocation={handleSearchForLocation}
         weatherInFiveDays={weatherInFiveDays}
+        // weatherDetail={weatherDetail}
       />
     </>
   )

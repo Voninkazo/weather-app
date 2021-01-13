@@ -36427,8 +36427,36 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const LocationContainerStyles = _styledComponents.default.div`
-  // max-width : 25%;
+const LocationContainerStyles = _styledComponents.default.nav`
+background-color: #1E213A;
+padding-left:46px;
+padding-right:46px;
+padding-top: 19px;
+
+form {
+  display: flex;
+  flex-direction: row;
+  gap:12px;
+}
+  input {
+border: 1px solid #E7E7EB;
+box-sizing: border-box;
+font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+color: #616475;
+background:none;
+padding-top: 14px;
+padding-bottom: 14px;
+padding-left: 46px;
+}
+
+button {
+font-weight: 600;
+font-size: 16px;
+line-height: 19px;
+color: #E7E7EB;
+}
 `;
 const LocationsStyles = _styledComponents.default.p`
   border : 1px solid #ccc;
@@ -36440,7 +36468,7 @@ function Locations({
   weatherLocations,
   handleSearchForLocation
 }) {
-  return /*#__PURE__*/_react.default.createElement("nav", {
+  return /*#__PURE__*/_react.default.createElement(LocationContainerStyles, {
     className: "navigation"
   }, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "checkbox"
@@ -36449,12 +36477,13 @@ function Locations({
   }, "close")), /*#__PURE__*/_react.default.createElement("form", {
     onSubmit: handleSearchForLocation
   }, /*#__PURE__*/_react.default.createElement("input", {
-    name: "location"
+    name: "location",
+    placeholder: "search location"
   }), /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
-  }, "search")), weatherLocations.length !== 0 ? weatherLocations.map((location, index) => /*#__PURE__*/_react.default.createElement(LocationsStyles, {
+  }, "search")), weatherLocations.length !== 0 ? weatherLocations.map((location, index) => /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(LocationsStyles, {
     key: index
-  }, location.title)) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
+  }, location.title))) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/Weather.js":[function(require,module,exports) {
 "use strict";
@@ -36473,17 +36502,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Weather({
   weatherInFiveDays
 }) {
-  console.log(weatherInFiveDays);
-  const futureWeather = weatherInFiveDays.consolidated_weather;
-  console.log(futureWeather);
-
-  const weatherInFiveDaysElem = futureWeather => {
-    return futureWeather ? /*#__PURE__*/_react.default.createElement("div", null, " ", futureWeather.map((weather, index) => /*#__PURE__*/_react.default.createElement("p", {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("section", null, weatherInFiveDays.length !== 0 ? weatherInFiveDays.consolidated_weather?.slice(1).map((weather, index) => {
+    return /*#__PURE__*/_react.default.createElement("div", {
       key: index
-    }, weather.weather_state_name))) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...");
-  };
-
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("section", null, weatherInFiveDaysElem(futureWeather)), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "Wind status"), /*#__PURE__*/_react.default.createElement("li", null, "Humidity"), /*#__PURE__*/_react.default.createElement("li", null, "Visibility"), /*#__PURE__*/_react.default.createElement("li", null, "Air Pressure"))));
+    }, /*#__PURE__*/_react.default.createElement("p", null, weather.applicable_date), /*#__PURE__*/_react.default.createElement("p", null, weather.max_temp, " ", weather.min_temp), /*#__PURE__*/_react.default.createElement("p", null, weather.weather_state_name));
+  }) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...")), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "Wind status: ", weatherInFiveDays.consolidated_weather?.[0].wind_speed), /*#__PURE__*/_react.default.createElement("li", null, "Humidity: ", weatherInFiveDays.consolidated_weather?.[0].humidity), /*#__PURE__*/_react.default.createElement("li", null, "Visibility:", weatherInFiveDays.consolidated_weather?.[0].visibility), /*#__PURE__*/_react.default.createElement("li", null, "Air Pressure: ", weatherInFiveDays.consolidated_weather?.[0].air_pressure))));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/Main.js":[function(require,module,exports) {
 "use strict";
@@ -36514,13 +36537,16 @@ function Main({
   weatherLocations,
   weatherInFiveDays
 }) {
+  console.log(weatherInFiveDays);
   return /*#__PURE__*/_react.default.createElement(MainStyles, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
     type: "checkbox",
     name: "checkbox",
     id: "checkbox"
   }), /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "checkbox"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "Search Location")), /*#__PURE__*/_react.default.createElement(_Locations.default, {
+  }, /*#__PURE__*/_react.default.createElement("span", null, "Search Location")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].the_temp), /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].applicable_date), weatherLocations.map(location => {
+    return /*#__PURE__*/_react.default.createElement("p", null, location.title);
+  })), /*#__PURE__*/_react.default.createElement(_Locations.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation
   })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_Weather.default, {
@@ -36548,18 +36574,20 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function App() {
   const [location, setLocation] = (0, _react.useState)('london');
   const [weatherLocations, setWeatherLocations] = (0, _react.useState)([]);
-  const [weatherInFiveDays, setWeatherInFiveDays] = (0, _react.useState)([]);
+  const [weatherInFiveDays, setWeatherInFiveDays] = (0, _react.useState)([]); // const [weatherDetail,setWeatherDetail] = useState([]);
 
   async function fetchLocation() {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`);
     const dataLocation = await res.json();
     setWeatherLocations(dataLocation);
+    console.log(weatherLocations);
 
-    if (weatherLocations.length) {
+    if (dataLocation.length) {
       console.log(dataLocation);
-      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${weatherLocations[0].woeid}`);
+      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
       const response = await res.json();
-      setWeatherInFiveDays(response);
+      setWeatherInFiveDays(response); // setWeatherDetail(response);
+      // console.log(weatherDetail)
     }
   }
 
@@ -36574,10 +36602,12 @@ function App() {
     e.target.reset();
   }
 
+  console.log(weatherInFiveDays);
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Main.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation,
-    weatherInFiveDays: weatherInFiveDays
+    weatherInFiveDays: weatherInFiveDays // weatherDetail={weatherDetail}
+
   }));
 }
 },{"react":"node_modules/react/index.js","./components/Main":"components/Main.js"}],"index.js":[function(require,module,exports) {
@@ -36623,7 +36653,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62865" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50043" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
