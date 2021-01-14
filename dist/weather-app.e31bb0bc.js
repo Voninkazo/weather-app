@@ -36456,12 +36456,27 @@ font-weight: 600;
 font-size: 16px;
 line-height: 19px;
 color: #E7E7EB;
+background-color: #3C47E9;
+outline:none;
+border:none;
+padding-top: 14px;
+padding-bottom: 14px;
+padding-left: 19px;
+padding-right: 15px;
 }
 `;
 const LocationsStyles = _styledComponents.default.p`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #E7E7EB;
   border : 1px solid #ccc;
-  padding : 1rem;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  padding-left: 12px;
+  padding-right: 12px;
   cursor : pointer;
+  margin-top: 58px;
 `;
 
 function Locations({
@@ -36471,10 +36486,22 @@ function Locations({
   return /*#__PURE__*/_react.default.createElement(LocationContainerStyles, {
     className: "navigation"
   }, /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "checkbox"
+    htmlFor: "checkbox",
+    className: "closing-label"
   }, /*#__PURE__*/_react.default.createElement("span", {
-    className: "icon__close "
-  }, "close")), /*#__PURE__*/_react.default.createElement("form", {
+    className: "icon__close"
+  }, /*#__PURE__*/_react.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "#E7E7EB",
+    width: "24"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+  })))), /*#__PURE__*/_react.default.createElement("form", {
     onSubmit: handleSearchForLocation
   }, /*#__PURE__*/_react.default.createElement("input", {
     name: "location",
@@ -36499,14 +36526,76 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const FutureWeatherSection = _styledComponents.default.section`
+  padding: 52px 54px;
+ `;
+const FutureWeatherContainer = _styledComponents.default.div`
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ column-gap: 28px;
+ row-gap: 32px;
+
+ .future_weather_list_conatiner {
+  background-color: #1E213A;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin: 0;
+ }
+ `;
+
 function Weather({
   weatherInFiveDays
 }) {
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("section", null, weatherInFiveDays.length !== 0 ? weatherInFiveDays.consolidated_weather?.slice(1).map((weather, index) => {
-    return /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherInFiveDays.length !== 0 ? weatherInFiveDays.consolidated_weather?.slice(1).map((weather, index) => {
+    return /*#__PURE__*/_react.default.createElement("ul", {
+      className: "future_weather_list_conatiner",
       key: index
-    }, /*#__PURE__*/_react.default.createElement("p", null, weather.applicable_date), /*#__PURE__*/_react.default.createElement("p", null, weather.max_temp, " ", weather.min_temp), /*#__PURE__*/_react.default.createElement("p", null, weather.weather_state_name));
-  }) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...")), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "Wind status: ", weatherInFiveDays.consolidated_weather?.[0].wind_speed), /*#__PURE__*/_react.default.createElement("li", null, "Humidity: ", weatherInFiveDays.consolidated_weather?.[0].humidity), /*#__PURE__*/_react.default.createElement("li", null, "Visibility:", weatherInFiveDays.consolidated_weather?.[0].visibility), /*#__PURE__*/_react.default.createElement("li", null, "Air Pressure: ", weatherInFiveDays.consolidated_weather?.[0].air_pressure))));
+    }, /*#__PURE__*/_react.default.createElement("li", {
+      className: "date_of_weather"
+    }, weather.applicable_date), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("ul", {
+      className: "temp_detail_container"
+    }, /*#__PURE__*/_react.default.createElement("li", {
+      className: "max_temp"
+    }, weather.max_temp), /*#__PURE__*/_react.default.createElement("li", {
+      className: "min_temp"
+    }, weather.min_temp))));
+  }) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...")), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", {
+    className: "more_detail_container"
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Wind status"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherInFiveDays.consolidated_weather?.[0].wind_speed, "mph")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Humidity"), /*#__PURE__*/_react.default.createElement("ul", {
+    style: {
+      display: "flex",
+      flexDirection: "column"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", {
+    style: {
+      marginBlockStart: "12px"
+    }
+  }, /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherInFiveDays.consolidated_weather?.[0].humidity, "%")), /*#__PURE__*/_react.default.createElement("li", {
+    style: {
+      marginBlockStart: "12px"
+    }
+  }, /*#__PURE__*/_react.default.createElement("progress", {
+    value: weatherInFiveDays.consolidated_weather?.[0].humidity,
+    max: "100"
+  }, weatherInFiveDays.consolidated_weather?.[0].humidity, "%")))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Visibility"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherInFiveDays.consolidated_weather?.[0].visibility, " miles")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Air Pressure"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherInFiveDays.consolidated_weather?.[0].air_pressure, "mb")))));
 }
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/Main.js":[function(require,module,exports) {
 "use strict";
@@ -36527,9 +36616,28 @@ var _Weather = _interopRequireDefault(require("./Weather"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const MainStyles = _styledComponents.default.main`
-display: grid;
-grid-template-columns: repeat(2,1fr);
-column-gap:154px;
+// display: flex;
+// grid-template-rows: repeat(2,1fr);
+// column-gap:154px;
+
+.btn-search {
+  background: #6E707A;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #E7E7EB;
+  padding: 11px 18px;
+  cursor: pointer;
+}
+`;
+const CurrentWeatherContainer = _styledComponents.default.div`
+  padding: 52px 54px;
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+  }
 `;
 
 function Main({
@@ -36538,14 +36646,28 @@ function Main({
   weatherInFiveDays
 }) {
   console.log(weatherInFiveDays);
-  return /*#__PURE__*/_react.default.createElement(MainStyles, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
+  return /*#__PURE__*/_react.default.createElement(MainStyles, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "current-detail-container"
+  }, /*#__PURE__*/_react.default.createElement("input", {
     type: "checkbox",
     name: "checkbox",
     id: "checkbox"
   }), /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "checkbox"
-  }, /*#__PURE__*/_react.default.createElement("span", null, "Search Location")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].the_temp), /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("p", null, weatherInFiveDays.consolidated_weather?.[0].applicable_date), weatherLocations.map(location => {
-    return /*#__PURE__*/_react.default.createElement("p", null, location.title);
+  }, /*#__PURE__*/_react.default.createElement("span", {
+    className: "btn-search"
+  }, "Search Location")), /*#__PURE__*/_react.default.createElement(CurrentWeatherContainer, null, /*#__PURE__*/_react.default.createElement("ul", {
+    className: "detail-container"
+  }, /*#__PURE__*/_react.default.createElement("li", {
+    className: "temp"
+  }, weatherInFiveDays.consolidated_weather?.[0].the_temp), /*#__PURE__*/_react.default.createElement("li", {
+    className: "weather"
+  }, weatherInFiveDays.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
+    className: "date"
+  }, weatherInFiveDays.consolidated_weather?.[0].applicable_date)), weatherLocations.map(location => {
+    return /*#__PURE__*/_react.default.createElement("p", {
+      className: "location"
+    }, location.title);
   })), /*#__PURE__*/_react.default.createElement(_Locations.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation
@@ -36574,7 +36696,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function App() {
   const [location, setLocation] = (0, _react.useState)('london');
   const [weatherLocations, setWeatherLocations] = (0, _react.useState)([]);
-  const [weatherInFiveDays, setWeatherInFiveDays] = (0, _react.useState)([]); // const [weatherDetail,setWeatherDetail] = useState([]);
+  const [weatherInFiveDays, setWeatherInFiveDays] = (0, _react.useState)([]);
 
   async function fetchLocation() {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`);
@@ -36586,8 +36708,7 @@ function App() {
       console.log(dataLocation);
       const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
       const response = await res.json();
-      setWeatherInFiveDays(response); // setWeatherDetail(response);
-      // console.log(weatherDetail)
+      setWeatherInFiveDays(response);
     }
   }
 
@@ -36606,8 +36727,7 @@ function App() {
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Main.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation,
-    weatherInFiveDays: weatherInFiveDays // weatherDetail={weatherDetail}
-
+    weatherInFiveDays: weatherInFiveDays
   }));
 }
 },{"react":"node_modules/react/index.js","./components/Main":"components/Main.js"}],"index.js":[function(require,module,exports) {
@@ -36653,7 +36773,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50043" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50129" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
