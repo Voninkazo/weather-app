@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import Main from './components/Main';
+import Highlights from './components/Highlights';
+import WeatherInFiveDays from './components/WeatherInFiveDays'
 
 export default function App () {
   const [ location, setLocation ] = useState('london')
   const [ weatherLocations, setWeatherLocations ] = useState([])
-  const [weatherInFiveDays, setWeatherInFiveDays] = useState([])
+  const [weatherObject, setWeatherObject] = useState([])
 
   async function fetchLocation() {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`)
@@ -17,7 +19,7 @@ export default function App () {
       console.log(dataLocation)
       const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
       const response = await res.json();
-    setWeatherInFiveDays(response)
+    setWeatherObject(response)
     }
   }
 
@@ -32,14 +34,18 @@ export default function App () {
     e.target.reset();
   }
 
-  console.log(weatherInFiveDays)
-
   return (
     <>
       <Main
         weatherLocations={weatherLocations}
         handleSearchForLocation={handleSearchForLocation}
-        weatherInFiveDays={weatherInFiveDays}
+        weatherObject={weatherObject}
+      />
+      <WeatherInFiveDays 
+      weatherObject={weatherObject}
+      />
+      <Highlights 
+      weatherObject={weatherObject}
       />
     </>
   )

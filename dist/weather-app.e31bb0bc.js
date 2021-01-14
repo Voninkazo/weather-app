@@ -36512,91 +36512,6 @@ function Locations({
     key: index
   }, location.title))) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/Weather.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Weather;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const FutureWeatherSection = _styledComponents.default.section`
-  padding: 52px 54px;
- `;
-const FutureWeatherContainer = _styledComponents.default.div`
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- column-gap: 28px;
- row-gap: 32px;
-
- .future_weather_list_conatiner {
-  background-color: #1E213A;
-  padding: 22px 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  margin: 0;
- }
- `;
-
-function Weather({
-  weatherInFiveDays
-}) {
-  return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherInFiveDays.length !== 0 ? weatherInFiveDays.consolidated_weather?.slice(1).map((weather, index) => {
-    return /*#__PURE__*/_react.default.createElement("ul", {
-      className: "future_weather_list_conatiner",
-      key: index
-    }, /*#__PURE__*/_react.default.createElement("li", {
-      className: "date_of_weather"
-    }, weather.applicable_date), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("ul", {
-      className: "temp_detail_container"
-    }, /*#__PURE__*/_react.default.createElement("li", {
-      className: "max_temp"
-    }, weather.max_temp), /*#__PURE__*/_react.default.createElement("li", {
-      className: "min_temp"
-    }, weather.min_temp))));
-  }) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...")), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", {
-    className: "more_detail_container"
-  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
-    className: "category"
-  }, "Wind status"), /*#__PURE__*/_react.default.createElement("span", {
-    className: "value"
-  }, weatherInFiveDays.consolidated_weather?.[0].wind_speed, "mph")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
-    className: "category"
-  }, "Humidity"), /*#__PURE__*/_react.default.createElement("ul", {
-    style: {
-      display: "flex",
-      flexDirection: "column"
-    }
-  }, /*#__PURE__*/_react.default.createElement("li", {
-    style: {
-      marginBlockStart: "12px"
-    }
-  }, /*#__PURE__*/_react.default.createElement("span", {
-    className: "value"
-  }, weatherInFiveDays.consolidated_weather?.[0].humidity, "%")), /*#__PURE__*/_react.default.createElement("li", {
-    style: {
-      marginBlockStart: "12px"
-    }
-  }, /*#__PURE__*/_react.default.createElement("progress", {
-    value: weatherInFiveDays.consolidated_weather?.[0].humidity,
-    max: "100"
-  }, weatherInFiveDays.consolidated_weather?.[0].humidity, "%")))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
-    className: "category"
-  }, "Visibility"), /*#__PURE__*/_react.default.createElement("span", {
-    className: "value"
-  }, weatherInFiveDays.consolidated_weather?.[0].visibility, " miles")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
-    className: "category"
-  }, "Air Pressure"), /*#__PURE__*/_react.default.createElement("span", {
-    className: "value"
-  }, weatherInFiveDays.consolidated_weather?.[0].air_pressure, "mb")))));
-}
 },{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/Main.js":[function(require,module,exports) {
 "use strict";
 
@@ -36611,10 +36526,9 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _Locations = _interopRequireDefault(require("./Locations"));
 
-var _Weather = _interopRequireDefault(require("./Weather"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import Weather from './Weather';
 const MainStyles = _styledComponents.default.main`
 // display: flex;
 // grid-template-rows: repeat(2,1fr);
@@ -36643,9 +36557,9 @@ const CurrentWeatherContainer = _styledComponents.default.div`
 function Main({
   handleSearchForLocation,
   weatherLocations,
-  weatherInFiveDays
+  weatherObject
 }) {
-  console.log(weatherInFiveDays);
+  console.log(weatherObject);
   return /*#__PURE__*/_react.default.createElement(MainStyles, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "current-detail-container"
   }, /*#__PURE__*/_react.default.createElement("input", {
@@ -36660,22 +36574,135 @@ function Main({
     className: "detail-container"
   }, /*#__PURE__*/_react.default.createElement("li", {
     className: "temp"
-  }, weatherInFiveDays.consolidated_weather?.[0].the_temp), /*#__PURE__*/_react.default.createElement("li", {
+  }, Math.round(weatherObject.consolidated_weather?.[0].the_temp), "\xB0C"), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("img", {
+    src: `https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`
+  })), /*#__PURE__*/_react.default.createElement("li", {
     className: "weather"
-  }, weatherInFiveDays.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
+  }, weatherObject.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
     className: "date"
-  }, weatherInFiveDays.consolidated_weather?.[0].applicable_date)), weatherLocations.map(location => {
+  }, "Today ", weatherObject.consolidated_weather?.[0].applicable_date)), weatherLocations.map(location => {
     return /*#__PURE__*/_react.default.createElement("p", {
       className: "location"
     }, location.title);
   })), /*#__PURE__*/_react.default.createElement(_Locations.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation
-  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_Weather.default, {
-    weatherInFiveDays: weatherInFiveDays
-  })));
+  })), /*#__PURE__*/_react.default.createElement("div", null));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./Locations":"components/Locations.js","./Weather":"components/Weather.js"}],"App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./Locations":"components/Locations.js"}],"components/Highlights.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Highlights({
+  weatherObject
+}) {
+  return /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", {
+    className: "more_detail_container"
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Wind status"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, Math.round(weatherObject.consolidated_weather?.[0].wind_speed), "mph")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Humidity"), /*#__PURE__*/_react.default.createElement("ul", {
+    style: {
+      display: "flex",
+      flexDirection: "column"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", {
+    style: {
+      marginBlockStart: "12px"
+    }
+  }, /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherObject.consolidated_weather?.[0].humidity, "%")), /*#__PURE__*/_react.default.createElement("li", {
+    style: {
+      marginBlockStart: "12px"
+    }
+  }, /*#__PURE__*/_react.default.createElement("progress", {
+    value: weatherObject.consolidated_weather?.[0].humidity,
+    max: "100"
+  }, weatherObject.consolidated_weather?.[0].humidity, "%")))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Visibility"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, Math.round(weatherObject.consolidated_weather?.[0].visibility), " miles")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+    className: "category"
+  }, "Air Pressure"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "value"
+  }, weatherObject.consolidated_weather?.[0].air_pressure, "mb"))));
+}
+
+var _default = Highlights;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"components/WeatherInFiveDays.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = WeatherInFiveDays;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aou", "Sep", "Nov", "Dec"];
+const FutureWeatherSection = _styledComponents.default.section`
+  padding: 52px 54px;
+ `;
+const FutureWeatherContainer = _styledComponents.default.div`
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ column-gap: 28px;
+ row-gap: 32px;
+
+ .future_weather_list_conatiner {
+  background-color: #1E213A;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin: 0;
+ }
+ `;
+
+function WeatherInFiveDays({
+  weatherObject
+}) {
+  return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather, index) => {
+    const date = new Date(`${weather.consolidated_weather}`);
+    const day = days[date.getDay()];
+    const month = months[date.getMonts()];
+    const numericDate = date.getDate();
+    return /*#__PURE__*/_react.default.createElement("ul", {
+      className: "future_weather_list_conatiner",
+      key: index
+    }, /*#__PURE__*/_react.default.createElement("li", {
+      className: "date_of_weather"
+    }, `${day}, ${numericDate} ${month}`), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("img", {
+      src: `https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`
+    })), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("ul", {
+      className: "temp_detail_container"
+    }, /*#__PURE__*/_react.default.createElement("li", {
+      className: "max_temp"
+    }, Math.round(weather.max_temp), "\xB0C"), /*#__PURE__*/_react.default.createElement("li", {
+      className: "min_temp"
+    }, Math.round(weather.min_temp), "\xB0C"))));
+  }) : /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
+}
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36687,6 +36714,10 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _Main = _interopRequireDefault(require("./components/Main"));
 
+var _Highlights = _interopRequireDefault(require("./components/Highlights"));
+
+var _WeatherInFiveDays = _interopRequireDefault(require("./components/WeatherInFiveDays"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
@@ -36696,7 +36727,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function App() {
   const [location, setLocation] = (0, _react.useState)('london');
   const [weatherLocations, setWeatherLocations] = (0, _react.useState)([]);
-  const [weatherInFiveDays, setWeatherInFiveDays] = (0, _react.useState)([]);
+  const [weatherObject, setWeatherObject] = (0, _react.useState)([]);
 
   async function fetchLocation() {
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`);
@@ -36708,7 +36739,7 @@ function App() {
       console.log(dataLocation);
       const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
       const response = await res.json();
-      setWeatherInFiveDays(response);
+      setWeatherObject(response);
     }
   }
 
@@ -36723,14 +36754,17 @@ function App() {
     e.target.reset();
   }
 
-  console.log(weatherInFiveDays);
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Main.default, {
     weatherLocations: weatherLocations,
     handleSearchForLocation: handleSearchForLocation,
-    weatherInFiveDays: weatherInFiveDays
+    weatherObject: weatherObject
+  }), /*#__PURE__*/_react.default.createElement(_WeatherInFiveDays.default, {
+    weatherObject: weatherObject
+  }), /*#__PURE__*/_react.default.createElement(_Highlights.default, {
+    weatherObject: weatherObject
   }));
 }
-},{"react":"node_modules/react/index.js","./components/Main":"components/Main.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./components/Main":"components/Main.js","./components/Highlights":"components/Highlights.js","./components/WeatherInFiveDays":"components/WeatherInFiveDays.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));

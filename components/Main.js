@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Locations from './Locations';
-import Weather from './Weather';
+// import Weather from './Weather';
 
 const MainStyles = styled.main`
 // display: flex;
@@ -34,10 +34,10 @@ export default function Main(
   {
     handleSearchForLocation,
     weatherLocations,
-    weatherInFiveDays,
+    weatherObject,
   }
 ) {
-  console.log(weatherInFiveDays)
+  console.log(weatherObject)
   return (
     <MainStyles>
       <div className="current-detail-container">
@@ -47,9 +47,12 @@ export default function Main(
             </label>
             <CurrentWeatherContainer>
             <ul className="detail-container">
-             <li className="temp">{weatherInFiveDays.consolidated_weather?.[0].the_temp}</li>
-             <li className="weather">{weatherInFiveDays.consolidated_weather?.[0].weather_state_name}</li>
-             <li className="date">{weatherInFiveDays.consolidated_weather?.[0].applicable_date}</li>
+             <li className="temp">{Math.round(weatherObject.consolidated_weather?.[0].the_temp)}&deg;C</li>
+             <li>
+               <img src={`https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`} />
+             </li>
+             <li className="weather">{weatherObject.consolidated_weather?.[0].weather_state_name}</li>
+             <li className="date">Today {weatherObject.consolidated_weather?.[0].applicable_date}</li>
              </ul>
              {
                weatherLocations.map(location => {
@@ -66,9 +69,9 @@ export default function Main(
             />
       </div>
       <div>
-      <Weather 
-        weatherInFiveDays={weatherInFiveDays}
-      />
+      {/* <Weather 
+        weatherObject={weatherObject}
+      /> */}
       </div>
     </MainStyles>
   )
