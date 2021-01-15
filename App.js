@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Main from './components/Main';
 import Highlights from './components/Highlights';
-import WeatherInFiveDays from './components/WeatherInFiveDays'
+import WeatherInFiveDays from './components/WeatherInFiveDays';
 
 export default function App () {
   const [ location, setLocation ] = useState('london')

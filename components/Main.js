@@ -1,7 +1,9 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import styled from 'styled-components'
 
 import Locations from './Locations';
+import Menu from './Menu';
+import { GlobalContext } from './GlobalContext';
 // import Weather from './Weather';
 
 const MainStyles = styled.main`
@@ -38,18 +40,21 @@ export default function Main(
   }
 ) {
   console.log(weatherObject)
+  const {state} = useContext(GlobalContext);
+  const {tempDegreeType} = state;
+
+  const celsius = Math.round(weatherObject.consolidated_weather && weatherObject.consolidated_weather[0].the_temp);
+  const fahrenheit = Math.round((celsius * 9/5) + 32);
+
   return (
     <MainStyles>
       <div className="current-detail-container">
-            <input type="checkbox" name="checkbox" id="checkbox" />
-            <label htmlFor="checkbox">
-                <span className="btn-search">Search Location</span>
-            </label>
+            <Menu />
             <CurrentWeatherContainer>
             <ul className="detail-container">
-             <li className="temp">{Math.round(weatherObject.consolidated_weather?.[0].the_temp)}&deg;C</li>
+             <li className="temp">{tempDegreeType === "celsius" ? celsius + "°C" : fahrenheit + "°F"}</li>
              <li>
-               <img src={`https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`} />
+               <img className="current_weather_img" src={`https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`} />
              </li>
              <li className="weather">{weatherObject.consolidated_weather?.[0].weather_state_name}</li>
              <li className="date">Today {weatherObject.consolidated_weather?.[0].applicable_date}</li>
