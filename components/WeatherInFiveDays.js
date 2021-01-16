@@ -34,11 +34,12 @@ export default function WeatherInFiveDays({weatherObject}) {
     <FutureWeatherSection>
      <FutureWeatherContainer>
       {weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather,index) => {
-        const date = new Date(`${weather?.consolidated_weather}`)
+        const date = new Date(weather.applicable_date)
         const day = days[date.getDay()];
         const month = months[date.getMonth()];
         const numericDate = date.getDate();
         const fullDate = `${day}, ${numericDate} ${month}`;
+        console.log(fullDate)
 
         const max_celsius = Math.round(weather.max_temp && weather.max_temp);
         const max_fahrenheit = Math.round((max_celsius * 9/5) + 32);
