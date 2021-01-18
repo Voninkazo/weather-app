@@ -2,9 +2,8 @@
  import styled from 'styled-components';
 
 import { GlobalContext } from './GlobalContext';
-
- const days = ["Mon", "Tue", "Wed", "Thu", "Fri","Sat","Sun"];
- const months = ["Jan", "Feb","Mar","Apr","May","Jun","Jul","Aou","Sep","Nov","Dec"]
+import {days} from './ArraysOfDate';
+import {months} from './ArraysOfDate';
 
  const FutureWeatherSection = styled.section`
   padding: 52px 54px;

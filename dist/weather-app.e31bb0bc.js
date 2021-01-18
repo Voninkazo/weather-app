@@ -36650,7 +36650,18 @@ function Menu() {
 
 var _default = Menu;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./ConversionDgreeTYpe":"components/ConversionDgreeTYpe.js"}],"components/CurrentWeather.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./ConversionDgreeTYpe":"components/ConversionDgreeTYpe.js"}],"components/ArraysOfDate.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.months = exports.days = void 0;
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+exports.days = days;
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aou", "Sep", "Nov", "Dec"];
+exports.months = months;
+},{}],"components/CurrentWeather.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36663,6 +36674,8 @@ var _react = _interopRequireWildcard(require("react"));
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _GlobalContext = require("./GlobalContext");
+
+var _ArraysOfDate = require("./ArraysOfDate");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36691,6 +36704,15 @@ function CurrentWeather({
   } = state;
   const celsius = Math.round(weatherObject.consolidated_weather && weatherObject.consolidated_weather[0].the_temp);
   const fahrenheit = Math.round(celsius * 9 / 5 + 32);
+  const date = new Date(weatherObject.consolidated_weather?.[0].applicable_date);
+
+  const day = _ArraysOfDate.days[date.getDay()];
+
+  const month = _ArraysOfDate.months[date.getMonth()];
+
+  const numericDate = date.getDate();
+  const fullDate = `${day}, ${numericDate} ${month}`;
+  console.log(fullDate);
   return /*#__PURE__*/_react.default.createElement(CurrentWeatherContainer, null, /*#__PURE__*/_react.default.createElement("ul", {
     className: "detail-container"
   }, /*#__PURE__*/_react.default.createElement("li", {
@@ -36702,7 +36724,7 @@ function CurrentWeather({
     className: "weather"
   }, weatherObject.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
     className: "date"
-  }, "Today ", weatherObject.consolidated_weather?.[0].applicable_date)), weatherLocations.map(location => {
+  }, "Today ", fullDate)), weatherLocations.map(location => {
     return /*#__PURE__*/_react.default.createElement("p", {
       className: "location"
     }, location.title);
@@ -36711,7 +36733,7 @@ function CurrentWeather({
 
 var _default = CurrentWeather;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js"}],"components/Main.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js","./ArraysOfDate":"components/ArraysOfDate.js"}],"components/Main.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36831,14 +36853,14 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _GlobalContext = require("./GlobalContext");
 
+var _ArraysOfDate = require("./ArraysOfDate");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aou", "Sep", "Nov", "Dec"];
 const FutureWeatherSection = _styledComponents.default.section`
   padding: 52px 54px;
  `;
@@ -36869,8 +36891,11 @@ function WeatherInFiveDays({
   } = state;
   return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather, index) => {
     const date = new Date(weather.applicable_date);
-    const day = days[date.getDay()];
-    const month = months[date.getMonth()];
+
+    const day = _ArraysOfDate.days[date.getDay()];
+
+    const month = _ArraysOfDate.months[date.getMonth()];
+
     const numericDate = date.getDate();
     const fullDate = `${day}, ${numericDate} ${month}`;
     console.log(fullDate);
@@ -36899,7 +36924,7 @@ function WeatherInFiveDays({
     }
   }, "Loading...")));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js"}],"App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js","./ArraysOfDate":"components/ArraysOfDate.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37005,7 +37030,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52812" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50030" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
