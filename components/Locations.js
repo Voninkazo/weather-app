@@ -1,5 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React,{useState,useContext} from 'react'
+import styled from 'styled-components';
+
+import {GlobalContext} from './GlobalContext';
 
 const LocationContainerStyles = styled.nav`
 background-color: #1E213A;
@@ -53,9 +55,20 @@ const LocationsStyles = styled.p`
   cursor : pointer;
   margin-top: 58px;
 `
-export default function Locations({
-  weatherLocations,handleSearchForLocation
-}) {
+export default function Locations() {
+
+  const {state,dispatch} = useContext(GlobalContext);
+  const {weatherLocations} = state;
+  const [input,setInput] = useState('');
+ 
+  function handleSearchForLocation(e) {
+    e.preventDefault()
+    // const inputLocation = e.target.location.value
+    // setLocation(inputLocation)
+
+    dispatch({type: "FETCH_LOCATION", chosenLocation: input })
+    e.target.reset();
+  }
   return (
       <LocationContainerStyles className="navigation">
             <label htmlFor="checkbox" className="closing-label">
@@ -67,6 +80,8 @@ export default function Locations({
               <input 
                 name="location"
                 placeholder="search location"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
                />
               <button type="submit" >search</button>
             </form>

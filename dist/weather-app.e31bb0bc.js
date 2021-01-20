@@ -34273,6 +34273,28 @@ function GlobalContextProvider({
 }) {
   const [state, dispatch] = (0, _react.useReducer)((state, action) => {
     switch (action.type) {
+      case "FETCH_LOCATION":
+        {
+          return { ...state,
+            loading: false,
+            location: action.chosenLocation
+          };
+        }
+
+      case "LOCATION_OBJECT":
+        {
+          return { ...state,
+            weatherLocations: action.weatherLocations
+          };
+        }
+
+      case "WEATHER_OBJ":
+        {
+          return { ...state,
+            weatherObject: action.weatherObj
+          };
+        }
+
       case "CHANGE_DEGREE_TYPE":
         {
           return { ...state,
@@ -34286,8 +34308,40 @@ function GlobalContextProvider({
         }
     }
   }, {
+    loading: true,
+    location: 'london',
+    weatherLocations: [],
+    weatherObj: [],
     tempDegreeType: "celsius"
   });
+  let {
+    location
+  } = state;
+
+  async function fetchLocation() {
+    const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`);
+    const dataLocation = await res.json();
+    dispatch({
+      type: "LOCATION_OBJECT",
+      weatherLocations: dataLocation
+    }); // setWeatherLocations(dataLocation)
+    // console.log(weatherLocations)
+
+    if (weatherLocations.length) {
+      //   console.log(dataLocation)
+      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${weatherLocations[0].woeid}`);
+      const response = await res.json(); // setWeatherObject(response)
+
+      dispatch({
+        type: "WEATHER_OBJ",
+        weatherObj: response
+      });
+    }
+  }
+
+  (0, _react.useEffect)(() => {
+    fetchLocation();
+  }, [location]);
   return /*#__PURE__*/_react.default.createElement(GlobalContext.Provider, {
     value: {
       state,
@@ -36467,11 +36521,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Locations;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
+var _GlobalContext = require("./GlobalContext");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 const LocationContainerStyles = _styledComponents.default.nav`
 background-color: #1E213A;
@@ -36525,10 +36585,27 @@ const LocationsStyles = _styledComponents.default.p`
   margin-top: 58px;
 `;
 
-function Locations({
-  weatherLocations,
-  handleSearchForLocation
-}) {
+function Locations() {
+  const {
+    state,
+    dispatch
+  } = (0, _react.useContext)(_GlobalContext.GlobalContext);
+  const {
+    weatherLocations
+  } = state;
+  const [input, setInput] = (0, _react.useState)('');
+
+  function handleSearchForLocation(e) {
+    e.preventDefault(); // const inputLocation = e.target.location.value
+    // setLocation(inputLocation)
+
+    dispatch({
+      type: "FETCH_LOCATION",
+      chosenLocation: input
+    });
+    e.target.reset();
+  }
+
   return /*#__PURE__*/_react.default.createElement(LocationContainerStyles, {
     className: "navigation"
   }, /*#__PURE__*/_react.default.createElement("label", {
@@ -36551,14 +36628,16 @@ function Locations({
     onSubmit: handleSearchForLocation
   }, /*#__PURE__*/_react.default.createElement("input", {
     name: "location",
-    placeholder: "search location"
+    placeholder: "search location",
+    value: input,
+    onChange: e => setInput(e.target.value)
   }), /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
   }, "search")), weatherLocations.length !== 0 ? weatherLocations.map((location, index) => /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(LocationsStyles, {
     key: index
   }, location.title))) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/ConversionDgreeTYpe.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js"}],"components/ConversionDgreeTYpe.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36692,19 +36771,18 @@ const CurrentWeatherContainer = _styledComponents.default.div`;
   }
 `;
 
-function CurrentWeather({
-  weatherObject,
-  weatherLocations
-}) {
+function CurrentWeather() {
   const {
     state
   } = (0, _react.useContext)(_GlobalContext.GlobalContext);
   const {
-    tempDegreeType
+    tempDegreeType,
+    weatherObj,
+    weatherLocations
   } = state;
-  const celsius = Math.round(weatherObject.consolidated_weather && weatherObject.consolidated_weather[0].the_temp);
+  const celsius = Math.round(weatherObj.consolidated_weather && weatherObj.consolidated_weather[0].the_temp);
   const fahrenheit = Math.round(celsius * 9 / 5 + 32);
-  const date = new Date(weatherObject.consolidated_weather?.[0].applicable_date);
+  const date = new Date(weatherObj.consolidated_weather?.[0].applicable_date);
 
   const day = _ArraysOfDate.days[date.getDay()];
 
@@ -36719,10 +36797,10 @@ function CurrentWeather({
     className: "temp"
   }, tempDegreeType === "celsius" ? celsius + "°C" : fahrenheit + "°F"), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("img", {
     className: "current_weather_img",
-    src: `https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`
+    src: `https://www.metaweather.com//static/img/weather/${weatherObj.consolidated_weather?.[0].weather_state_abbr}.svg`
   })), /*#__PURE__*/_react.default.createElement("li", {
     className: "weather"
-  }, weatherObject.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
+  }, weatherObj.consolidated_weather?.[0].weather_state_name), /*#__PURE__*/_react.default.createElement("li", {
     className: "date"
   }, "Today ", fullDate)), weatherLocations.map(location => {
     return /*#__PURE__*/_react.default.createElement("p", {
@@ -36741,7 +36819,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Main;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
@@ -36751,7 +36829,13 @@ var _Menu = _interopRequireDefault(require("./Menu"));
 
 var _CurrentWeather = _interopRequireDefault(require("./CurrentWeather"));
 
+var _GlobalContext = require("./GlobalContext");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 const MainStyles = _styledComponents.default.main`
 // display: flex;
@@ -36770,22 +36854,26 @@ const MainStyles = _styledComponents.default.main`
 }
 `;
 
-function Main({
-  handleSearchForLocation,
-  weatherLocations,
-  weatherObject
-}) {
+function Main() {
+  // const {sate,dispatch} = useContext(GlobalContext);
+  // const {location} = state;
+  // const [input,setInput] = useState('');
+  // function handleSearchForLocation(e) {
+  //   e.preventDefault()
+  //   // const inputLocation = e.target.location.value
+  //   // setLocation(inputLocation)
+  //   dispatch({type: "FETCH_LOCATION", chosenLocation: input })
+  //   e.target.reset();
+  // }
   return /*#__PURE__*/_react.default.createElement(MainStyles, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "current-detail-container"
-  }, /*#__PURE__*/_react.default.createElement(_Menu.default, null), /*#__PURE__*/_react.default.createElement(_CurrentWeather.default, {
-    weatherObject: weatherObject,
-    weatherLocations: weatherLocations
-  }), /*#__PURE__*/_react.default.createElement(_Locations.default, {
-    weatherLocations: weatherLocations,
-    handleSearchForLocation: handleSearchForLocation
-  })));
+  }, /*#__PURE__*/_react.default.createElement(_Menu.default, null), /*#__PURE__*/_react.default.createElement(_CurrentWeather.default // weatherObject={weatherObject}
+  // weatherLocations={weatherLocations}
+  , null), /*#__PURE__*/_react.default.createElement(_Locations.default // weatherLocations={weatherLocations}
+  // handleSearchForLocation={handleSearchForLocation}
+  , null)));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./Locations":"components/Locations.js","./Menu":"components/Menu.js","./CurrentWeather":"components/CurrentWeather.js"}],"components/Highlights.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./Locations":"components/Locations.js","./Menu":"components/Menu.js","./CurrentWeather":"components/CurrentWeather.js","./GlobalContext":"components/GlobalContext.js"}],"components/Highlights.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36793,20 +36881,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _GlobalContext = require("./GlobalContext");
 
-function Highlights({
-  weatherObject
-}) {
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function Highlights() {
+  const {
+    state
+  } = (0, _react.useContext)(_GlobalContext.GlobalContext);
+  const {
+    weatherObj
+  } = state;
   return /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("h2", null, "Today's highlights"), /*#__PURE__*/_react.default.createElement("ul", {
     className: "more_detail_container"
   }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
     className: "category"
   }, "Wind status"), /*#__PURE__*/_react.default.createElement("span", {
     className: "value"
-  }, Math.round(weatherObject.consolidated_weather?.[0].wind_speed), "mph")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+  }, Math.round(weatherObj.consolidated_weather?.[0].wind_speed), "mph")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
     className: "category"
   }, "Humidity"), /*#__PURE__*/_react.default.createElement("ul", {
     style: {
@@ -36819,27 +36915,27 @@ function Highlights({
     }
   }, /*#__PURE__*/_react.default.createElement("span", {
     className: "value"
-  }, weatherObject.consolidated_weather?.[0].humidity, "%")), /*#__PURE__*/_react.default.createElement("li", {
+  }, weatherObj.consolidated_weather?.[0].humidity, "%")), /*#__PURE__*/_react.default.createElement("li", {
     style: {
       marginBlockStart: "12px"
     }
   }, /*#__PURE__*/_react.default.createElement("progress", {
-    value: weatherObject.consolidated_weather?.[0].humidity,
+    value: weatherObj.consolidated_weather?.[0].humidity,
     max: "100"
-  }, weatherObject.consolidated_weather?.[0].humidity, "%")))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+  }, weatherObj.consolidated_weather?.[0].humidity, "%")))), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
     className: "category"
   }, "Visibility"), /*#__PURE__*/_react.default.createElement("span", {
     className: "value"
-  }, Math.round(weatherObject.consolidated_weather?.[0].visibility), " miles")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
+  }, Math.round(weatherObj.consolidated_weather?.[0].visibility), " miles")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("p", {
     className: "category"
   }, "Air Pressure"), /*#__PURE__*/_react.default.createElement("span", {
     className: "value"
-  }, weatherObject.consolidated_weather?.[0].air_pressure, "mb"))));
+  }, weatherObj.consolidated_weather?.[0].air_pressure, "mb"))));
 }
 
 var _default = Highlights;
 exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"components/WeatherInFiveDays.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./GlobalContext":"components/GlobalContext.js"}],"components/WeatherInFiveDays.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36880,16 +36976,16 @@ const FutureWeatherContainer = _styledComponents.default.div`
  }
  `;
 
-function WeatherInFiveDays({
-  weatherObject
-}) {
+function WeatherInFiveDays() {
   const {
     state
   } = (0, _react.useContext)(_GlobalContext.GlobalContext);
   const {
-    tempDegreeType
+    tempDegreeType,
+    weatherObj,
+    loading
   } = state;
-  return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather, index) => {
+  return /*#__PURE__*/_react.default.createElement(FutureWeatherSection, null, /*#__PURE__*/_react.default.createElement(FutureWeatherContainer, null, weatherObj.length !== 0 ? weatherObj.consolidated_weather?.slice(1).map((weather, index) => {
     const date = new Date(weather.applicable_date);
 
     const day = _ArraysOfDate.days[date.getDay()];
@@ -36947,44 +37043,36 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function App() {
-  const [location, setLocation] = (0, _react.useState)('london');
-  const [weatherLocations, setWeatherLocations] = (0, _react.useState)([]);
-  const [weatherObject, setWeatherObject] = (0, _react.useState)([]);
-
-  async function fetchLocation() {
-    const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`);
-    const dataLocation = await res.json();
-    setWeatherLocations(dataLocation);
-    console.log(weatherLocations);
-
-    if (dataLocation.length) {
-      console.log(dataLocation);
-      const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
-      const response = await res.json();
-      setWeatherObject(response);
-    }
-  }
-
-  (0, _react.useEffect)(() => {
-    fetchLocation();
-  }, [location]);
-
-  function handleSearchForLocation(e) {
-    e.preventDefault();
-    const inputLocation = e.target.location.value;
-    setLocation(inputLocation);
-    e.target.reset();
-  }
-
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Main.default, {
-    weatherLocations: weatherLocations,
-    handleSearchForLocation: handleSearchForLocation,
-    weatherObject: weatherObject
-  }), /*#__PURE__*/_react.default.createElement(_WeatherInFiveDays.default, {
-    weatherObject: weatherObject
-  }), /*#__PURE__*/_react.default.createElement(_Highlights.default, {
-    weatherObject: weatherObject
-  }));
+  // const [ location, setLocation ] = useState('london')
+  // const [ weatherLocations, setWeatherLocations ] = useState([])
+  // const [weatherObject, setWeatherObject] = useState([])
+  // async function fetchLocation() {
+  //   const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`)
+  //   const dataLocation = await res.json()
+  //   setWeatherLocations(dataLocation)
+  //   console.log(weatherLocations)
+  //   if (dataLocation.length) {
+  //     console.log(dataLocation)
+  //     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
+  //     const response = await res.json();
+  //   setWeatherObject(response)
+  //   }
+  // }
+  // useEffect(() => {
+  //  fetchLocation()
+  // }, [location])
+  // function handleSearchForLocation(e) {
+  //   e.preventDefault()
+  //   const inputLocation = e.target.location.value
+  //   setLocation(inputLocation)
+  //   e.target.reset();
+  // }
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Main.default // weatherLocations={weatherLocations}
+  // handleSearchForLocation={handleSearchForLocation}
+  // weatherObject={weatherObject}
+  , null), /*#__PURE__*/_react.default.createElement(_WeatherInFiveDays.default // weatherObject={weatherObject}
+  , null), /*#__PURE__*/_react.default.createElement(_Highlights.default // weatherObject={weatherObject}
+  , null));
 }
 },{"react":"node_modules/react/index.js","./components/Main":"components/Main.js","./components/Highlights":"components/Highlights.js","./components/WeatherInFiveDays":"components/WeatherInFiveDays.js"}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -37030,7 +37118,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52393" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

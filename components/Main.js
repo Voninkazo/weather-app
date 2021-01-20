@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 
 import Locations from './Locations';
 import Menu from './Menu';
 import CurrentWeather from './CurrentWeather';
+import { GlobalContext } from './GlobalContext';
 
 const MainStyles = styled.main`
 // display: flex;
@@ -22,14 +23,20 @@ const MainStyles = styled.main`
 }
 `
 
-export default function Main(
-  {
-    handleSearchForLocation,
-    weatherLocations,
-    weatherObject,
-  }
-) {
+export default function Main() {
+
+  // const {sate,dispatch} = useContext(GlobalContext);
+  // const {location} = state;
+  // const [input,setInput] = useState('');
  
+  // function handleSearchForLocation(e) {
+  //   e.preventDefault()
+  //   // const inputLocation = e.target.location.value
+  //   // setLocation(inputLocation)
+
+  //   dispatch({type: "FETCH_LOCATION", chosenLocation: input })
+  //   e.target.reset();
+  // }
 
   return (
     <MainStyles>
@@ -37,12 +44,12 @@ export default function Main(
       <div className="current-detail-container">
             <Menu />
             <CurrentWeather 
-            weatherObject={weatherObject}
-            weatherLocations={weatherLocations}
+            // weatherObject={weatherObject}
+            // weatherLocations={weatherLocations}
             />
             <Locations
-            weatherLocations={weatherLocations}
-            handleSearchForLocation={handleSearchForLocation}
+            // weatherLocations={weatherLocations}
+            // handleSearchForLocation={handleSearchForLocation}
             />
       </div>
     </MainStyles>

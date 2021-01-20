@@ -25,14 +25,14 @@ import {months} from './ArraysOfDate';
  }
  `
 
-export default function WeatherInFiveDays({weatherObject}) {
+export default function WeatherInFiveDays() {
   const {state} = useContext(GlobalContext);
-  const {tempDegreeType} = state;
+  const {tempDegreeType,weatherObj,loading} = state;
 
   return (
     <FutureWeatherSection>
      <FutureWeatherContainer>
-      {weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather,index) => {
+      {weatherObj.length !== 0 ? weatherObj.consolidated_weather?.slice(1).map((weather,index) => {
         const date = new Date(weather.applicable_date)
         const day = days[date.getDay()];
         const month = months[date.getMonth()];
@@ -56,13 +56,12 @@ export default function WeatherInFiveDays({weatherObject}) {
               <li className="max_temp">{tempDegreeType === "celsius" ? max_celsius + "°C" : max_fahrenheit + "°F"}</li>
               <li className="min_temp">{tempDegreeType === "celsius" ? min_celsius + "°C"  : min_fahrenheit + "°F"}</li>
             </ul>
-          </li>
+          </li> 
         </ul>
       )
     })
     : 
-    <p style={{color:"white", }}>Loading...</p>
-  }
+    <p style={{color:"white", }}>Loading...</p>  }
     </FutureWeatherContainer>
     </FutureWeatherSection>
   )

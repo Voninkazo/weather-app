@@ -14,14 +14,14 @@ const CurrentWeatherContainer = styled.div`;
   }
 `
 
-function CurrentWeather({weatherObject,weatherLocations}) {
+function CurrentWeather() {
     const {state} = useContext(GlobalContext);
-    const {tempDegreeType} = state;
+    const {tempDegreeType,weatherObj,weatherLocations} = state;
   
-    const celsius = Math.round(weatherObject.consolidated_weather && weatherObject.consolidated_weather[0].the_temp);
+    const celsius = Math.round(weatherObj.consolidated_weather && weatherObj.consolidated_weather[0].the_temp);
     const fahrenheit = Math.round((celsius * 9/5) + 32);
 
-    const date = new Date(weatherObject.consolidated_weather?.[0].applicable_date)
+    const date = new Date(weatherObj.consolidated_weather?.[0].applicable_date)
         const day = days[date.getDay()];
         const month = months[date.getMonth()];
         const numericDate = date.getDate();
@@ -32,9 +32,9 @@ function CurrentWeather({weatherObject,weatherLocations}) {
             <ul className="detail-container">
              <li className="temp">{tempDegreeType === "celsius" ? celsius + "°C" : fahrenheit + "°F"}</li>
              <li>
-               <img className="current_weather_img" src={`https://www.metaweather.com//static/img/weather/${weatherObject.consolidated_weather?.[0].weather_state_abbr}.svg`} />
+               <img className="current_weather_img" src={`https://www.metaweather.com//static/img/weather/${weatherObj.consolidated_weather?.[0].weather_state_abbr}.svg`} />
              </li>
-             <li className="weather">{weatherObject.consolidated_weather?.[0].weather_state_name}</li>
+             <li className="weather">{weatherObj.consolidated_weather?.[0].weather_state_name}</li>
              <li className="date">Today {fullDate}</li>
              </ul>
              {
