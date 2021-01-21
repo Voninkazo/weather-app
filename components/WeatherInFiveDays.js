@@ -7,6 +7,12 @@ import {months} from './ArraysOfDate';
 
  const FutureWeatherSection = styled.section`
   padding: 52px 54px;
+
+  @media(min-width:1114px) {
+    padding-top: 66px;
+    padding-left:0;
+    padding-bottom: 72px;
+  }
  `
 
  const FutureWeatherContainer = styled.div`
@@ -23,16 +29,23 @@ import {months} from './ArraysOfDate';
   align-items: baseline;
   margin: 0;
  }
+
+@media(min-width:1114px) {
+  display: flex;
+  flex-direction: row;
+}
  `
 
 export default function WeatherInFiveDays() {
   const {state} = useContext(GlobalContext);
-  const {tempDegreeType,weatherObj,loading} = state;
+  const {tempDegreeType,weatherObject,loading} = state;
 
   return (
     <FutureWeatherSection>
-     <FutureWeatherContainer>
-      {weatherObj.length !== 0 ? weatherObj.consolidated_weather?.slice(1).map((weather,index) => {
+     {
+       !loading ? 
+       <FutureWeatherContainer>
+      {weatherObject.length !== 0 ? weatherObject.consolidated_weather?.slice(1).map((weather,index) => {
         const date = new Date(weather.applicable_date)
         const day = days[date.getDay()];
         const month = months[date.getMonth()];
@@ -63,6 +76,9 @@ export default function WeatherInFiveDays() {
     : 
     <p style={{color:"white", }}>Loading...</p>  }
     </FutureWeatherContainer>
+     :
+     <p>Loading...</p>
+  }
     </FutureWeatherSection>
   )
 }

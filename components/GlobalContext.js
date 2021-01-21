@@ -23,6 +23,7 @@ function GlobalContextProvider({children}) {
             case "WEATHER_OBJ" : {
                 return {
                     ...state,
+                    loading: false,
                     weatherObject: action.weatherObj
                 }
             }
@@ -41,7 +42,7 @@ function GlobalContextProvider({children}) {
         loading: true,
         location: 'london',
         weatherLocations: [],
-        weatherObj: [],
+        weatherObject: [],
         tempDegreeType: "celsius",
     })
 
@@ -51,14 +52,10 @@ function GlobalContextProvider({children}) {
         const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`)
         const dataLocation = await res.json();
         dispatch({type: "LOCATION_OBJECT", weatherLocations: dataLocation})
-        // setWeatherLocations(dataLocation)
-        // console.log(weatherLocations)
     
-        if (weatherLocations.length) {
-        //   console.log(dataLocation)
-          const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${weatherLocations[0].woeid}`);
+        if (dataLocation.length) {
+          const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
           const response = await res.json();
-        // setWeatherObject(response)
         dispatch({type: "WEATHER_OBJ", weatherObj: response })
         }
       }

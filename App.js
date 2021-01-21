@@ -1,52 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import Main from './components/Main';
-import Highlights from './components/Highlights';
+import Menu from './components/Menu';
+import CurrentWeather from './components/CurrentWeather';
+import LocationsSearch from './components/LocationsSearch';
 import WeatherInFiveDays from './components/WeatherInFiveDays';
+import Highlights from './components/Highlights';
 
 export default function App () {
-  // const [ location, setLocation ] = useState('london')
-  // const [ weatherLocations, setWeatherLocations ] = useState([])
-  // const [weatherObject, setWeatherObject] = useState([])
-
-  // async function fetchLocation() {
-  //   const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${location}`)
-  //   const dataLocation = await res.json()
-  //   setWeatherLocations(dataLocation)
-  //   console.log(weatherLocations)
-
-  //   if (dataLocation.length) {
-  //     console.log(dataLocation)
-  //     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${dataLocation[0].woeid}`);
-  //     const response = await res.json();
-  //   setWeatherObject(response)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //  fetchLocation()
-  // }, [location])
-
-  // function handleSearchForLocation(e) {
-  //   e.preventDefault()
-  //   const inputLocation = e.target.location.value
-  //   setLocation(inputLocation)
-  //   e.target.reset();
-  // }
 
   return (
     <>
-      <Main
-        // weatherLocations={weatherLocations}
-        // handleSearchForLocation={handleSearchForLocation}
-        // weatherObject={weatherObject}
-      />
-      <WeatherInFiveDays 
-      // weatherObject={weatherObject}
-      />
-      <Highlights 
-      // weatherObject={weatherObject}
-      />
+    <header>
+      <Menu />
+    </header>
+    <main>
+      <section>
+        <CurrentWeather />
+        <LocationsSearch />
+      </section>
+      <section>
+        <WeatherInFiveDays />
+        <Highlights />
+      </section>
+    </main>
     </>
   )
 }

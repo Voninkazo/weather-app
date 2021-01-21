@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 
 import { GlobalContext } from './GlobalContext';
 
@@ -10,8 +10,8 @@ function ConversionDgreeTYpe() {
         dispatch({type:"CHANGE_DEGREE_TYPE", updatedDgree: e.target.value})
     }
   return (
-    <div>
-            <div className="symbol_container">
+    <section className="symbol_container">
+            <div>
                 <input
                         type="radio"
                         id="celsius"
@@ -29,9 +29,9 @@ function ConversionDgreeTYpe() {
                     checked={tempDegreeType === "fahrenheit"}
                     onChange={convertDegreeType}
                 />
-                <label className="fahrenheit" htmlFor="fahrenheit">°F</label>
+                <label className="fahrenheit_symbol" htmlFor="fahrenheit">°F</label>
             </div>
-        </div>
+    </section>
   )
 }
 
