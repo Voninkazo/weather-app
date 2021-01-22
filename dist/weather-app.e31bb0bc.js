@@ -36545,25 +36545,27 @@ function ConversionDgreeTYpe() {
 
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "symbol_container"
-  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: "celsius",
+    className: "celsius_symbol"
+  }, "\xB0C"), /*#__PURE__*/_react.default.createElement("input", {
     type: "radio",
     id: "celsius",
     value: "celsius",
+    name: "celsius",
     checked: tempDegreeType === "celsius",
     onChange: convertDegreeType
-  }), /*#__PURE__*/_react.default.createElement("label", {
-    className: "celsius_symbol",
-    htmlFor: "celsius"
-  }, "\xB0C")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
+  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: "fahrenheit",
+    className: "fahrenheit_symbol"
+  }, "\xB0F"), /*#__PURE__*/_react.default.createElement("input", {
     type: "radio",
-    id: "farenheit",
+    name: "fahrenheit",
+    id: "fahrenheit",
     value: "fahrenheit",
     checked: tempDegreeType === "fahrenheit",
     onChange: convertDegreeType
-  }), /*#__PURE__*/_react.default.createElement("label", {
-    className: "fahrenheit_symbol",
-    htmlFor: "fahrenheit"
-  }, "\xB0F")));
+  })));
 }
 
 var _default = ConversionDgreeTYpe;
@@ -36775,6 +36777,7 @@ function LocationsSearch() {
   })))), /*#__PURE__*/_react.default.createElement("form", {
     onSubmit: handleSearchForLocation
   }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
     name: "location",
     placeholder: "search location",
     value: input,
@@ -37013,7 +37016,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51050" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58648" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

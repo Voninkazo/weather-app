@@ -27,7 +27,7 @@ function Menu() {
             <input type="checkbox" name="checkbox" id="checkbox" className="input_search_checkbox" />
                 <label htmlFor="checkbox">
                     <span className="btn-search">Search for places</span>
-            </label>
+                </label>
         </div>
 
     <ConversionDegreeType />

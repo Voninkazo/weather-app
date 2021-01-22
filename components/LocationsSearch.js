@@ -36,6 +36,7 @@ export default function LocationsSearch() {
             </label>
             <form onSubmit={handleSearchForLocation}>
               <input 
+                type="checkbox"
                 name="location"
                 placeholder="search location"
                 value={input}

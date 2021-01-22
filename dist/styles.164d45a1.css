@@ -1,6 +1,7 @@
 body {
   background-color: #100E1D;
   font-size: 16px;
+  font-family: "Lora";
 }
 
 .search-container {
@@ -47,7 +48,7 @@ body {
   padding-right: 15px;
 }
 
-input[type=checkbox]:checked ~ div.search-container {
+input[type=checkbox].input_search_checkbox:checked + div.search-container {
   transform: translateX(0);
   top: 0;
   left: 0;
@@ -80,7 +81,7 @@ h2 {
   height: 62px;
 }
 
-[type=checkbox] {
+[type=checkbox].input_search_checkbox {
   display: none;
 }
 

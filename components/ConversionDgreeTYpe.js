@@ -12,24 +12,26 @@ function ConversionDgreeTYpe() {
   return (
     <section className="symbol_container">
             <div>
+                <label htmlFor="celsius" className="celsius_symbol">°C</label>
                 <input
                         type="radio"
                         id="celsius"
                         value="celsius"
+                        name="celsius"
                         checked={tempDegreeType === "celsius"}
                         onChange={convertDegreeType}
                     />
-                <label className="celsius_symbol" htmlFor="celsius">°C</label>
             </div>
             <div>
+                <label htmlFor="fahrenheit" className="fahrenheit_symbol">°F</label>
                 <input
                     type="radio"
-                    id="farenheit"
+                    name="fahrenheit"
+                    id="fahrenheit"
                     value="fahrenheit"
                     checked={tempDegreeType === "fahrenheit"}
                     onChange={convertDegreeType}
                 />
-                <label className="fahrenheit_symbol" htmlFor="fahrenheit">°F</label>
             </div>
     </section>
   )
