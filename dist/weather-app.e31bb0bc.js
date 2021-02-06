@@ -29772,7 +29772,23 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _setPrototypeOf;
+
+function _setPrototypeOf(o, p) {
+  exports.default = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+},{}],"node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29780,12 +29796,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _inheritsLoose;
 
+var _setPrototypeOf = _interopRequireDefault(require("@babel/runtime/helpers/esm/setPrototypeOf"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+  (0, _setPrototypeOf.default)(subClass, superClass);
 }
-},{}],"node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/setPrototypeOf":"node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js"}],"node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js":[function(require,module,exports) {
 /** @license React v16.13.1
  * react-is.development.js
  *
@@ -36570,7 +36590,92 @@ function ConversionDgreeTYpe() {
 
 var _default = ConversionDgreeTYpe;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./GlobalContext":"components/GlobalContext.js"}],"components/Menu.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./GlobalContext":"components/GlobalContext.js"}],"components/LocationsSearch.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = LocationsSearch;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _GlobalContext = require("./GlobalContext");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const LocationsStyles = _styledComponents.default.p`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #E7E7EB;
+  border : 1px solid #ccc;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  padding-left: 12px;
+  padding-right: 12px;
+  cursor : pointer;
+  margin-top: 58px;
+`;
+
+function LocationsSearch() {
+  const {
+    state,
+    dispatch
+  } = (0, _react.useContext)(_GlobalContext.GlobalContext);
+  const {
+    weatherLocations
+  } = state;
+  const [input, setInput] = (0, _react.useState)('');
+
+  function handleSearchForLocation(e) {
+    e.preventDefault();
+    dispatch({
+      type: "FETCH_LOCATION",
+      chosenLocation: input
+    });
+    e.target.reset();
+  }
+
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "search-container"
+  }, /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: "checkbox",
+    className: "closing-label"
+  }, /*#__PURE__*/_react.default.createElement("span", {
+    className: "icon__close"
+  }, /*#__PURE__*/_react.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "#E7E7EB",
+    width: "24"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+  })))), /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: handleSearchForLocation
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    name: "location",
+    placeholder: "search location",
+    value: input,
+    onChange: e => setInput(e.target.value)
+  }), /*#__PURE__*/_react.default.createElement("button", {
+    type: "submit"
+  }, "search")), weatherLocations.length !== 0 ? weatherLocations.map((location, index) => /*#__PURE__*/_react.default.createElement("div", {
+    key: index
+  }, /*#__PURE__*/_react.default.createElement(LocationsStyles, null, location.title))) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
+}
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js"}],"components/Menu.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36583,6 +36688,8 @@ var _react = _interopRequireDefault(require("react"));
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _ConversionDgreeTYpe = _interopRequireDefault(require("./ConversionDgreeTYpe"));
+
+var _LocationsSearch = _interopRequireDefault(require("./LocationsSearch"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36604,21 +36711,21 @@ justify-content: space-between;
 `;
 
 function Menu() {
-  return /*#__PURE__*/_react.default.createElement(MenuContainerStyles, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
+  return /*#__PURE__*/_react.default.createElement(MenuContainerStyles, null, /*#__PURE__*/_react.default.createElement("input", {
     type: "checkbox",
     name: "checkbox",
     id: "checkbox",
     className: "input_search_checkbox"
-  }), /*#__PURE__*/_react.default.createElement("label", {
+  }), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: "checkbox"
   }, /*#__PURE__*/_react.default.createElement("span", {
     className: "btn-search"
-  }, "Search for places"))), /*#__PURE__*/_react.default.createElement(_ConversionDgreeTYpe.default, null));
+  }, "Search for places"))), /*#__PURE__*/_react.default.createElement(_LocationsSearch.default, null), /*#__PURE__*/_react.default.createElement(_ConversionDgreeTYpe.default, null));
 }
 
 var _default = Menu;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./ConversionDgreeTYpe":"components/ConversionDgreeTYpe.js"}],"components/ArraysOfDate.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./ConversionDgreeTYpe":"components/ConversionDgreeTYpe.js","./LocationsSearch":"components/LocationsSearch.js"}],"components/ArraysOfDate.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36703,92 +36810,7 @@ function CurrentWeather() {
 
 var _default = CurrentWeather;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js","./ArraysOfDate":"components/ArraysOfDate.js"}],"components/LocationsSearch.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = LocationsSearch;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _styledComponents = _interopRequireDefault(require("styled-components"));
-
-var _GlobalContext = require("./GlobalContext");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-const LocationsStyles = _styledComponents.default.p`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: #E7E7EB;
-  border : 1px solid #ccc;
-  padding-top: 22px;
-  padding-bottom: 22px;
-  padding-left: 12px;
-  padding-right: 12px;
-  cursor : pointer;
-  margin-top: 58px;
-`;
-
-function LocationsSearch() {
-  const {
-    state,
-    dispatch
-  } = (0, _react.useContext)(_GlobalContext.GlobalContext);
-  const {
-    weatherLocations
-  } = state;
-  const [input, setInput] = (0, _react.useState)('');
-
-  function handleSearchForLocation(e) {
-    e.preventDefault();
-    dispatch({
-      type: "FETCH_LOCATION",
-      chosenLocation: input
-    });
-    e.target.reset();
-  }
-
-  return /*#__PURE__*/_react.default.createElement("div", {
-    className: "search-container"
-  }, /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "checkbox",
-    className: "closing-label"
-  }, /*#__PURE__*/_react.default.createElement("span", {
-    className: "icon__close"
-  }, /*#__PURE__*/_react.default.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    height: "24",
-    viewBox: "0 0 24 24",
-    fill: "#E7E7EB",
-    width: "24"
-  }, /*#__PURE__*/_react.default.createElement("path", {
-    d: "M0 0h24v24H0z",
-    fill: "none"
-  }), /*#__PURE__*/_react.default.createElement("path", {
-    d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-  })))), /*#__PURE__*/_react.default.createElement("form", {
-    onSubmit: handleSearchForLocation
-  }, /*#__PURE__*/_react.default.createElement("input", {
-    type: "checkbox",
-    name: "location",
-    placeholder: "search location",
-    value: input,
-    onChange: e => setInput(e.target.value)
-  }), /*#__PURE__*/_react.default.createElement("button", {
-    type: "submit"
-  }, "search")), weatherLocations.length !== 0 ? weatherLocations.map((location, index) => /*#__PURE__*/_react.default.createElement("div", {
-    key: index
-  }, /*#__PURE__*/_react.default.createElement(LocationsStyles, null, location.title))) : /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Loading...")));
-}
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js"}],"components/WeatherInFiveDays.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./GlobalContext":"components/GlobalContext.js","./ArraysOfDate":"components/ArraysOfDate.js"}],"components/WeatherInFiveDays.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36970,7 +36992,7 @@ var _Highlights = _interopRequireDefault(require("./components/Highlights"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement(_Menu.default, null)), /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_CurrentWeather.default, null), /*#__PURE__*/_react.default.createElement(_LocationsSearch.default, null)), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_WeatherInFiveDays.default, null), /*#__PURE__*/_react.default.createElement(_Highlights.default, null))));
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement(_Menu.default, null)), /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_CurrentWeather.default, null)), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_WeatherInFiveDays.default, null), /*#__PURE__*/_react.default.createElement(_Highlights.default, null))));
 }
 },{"react":"node_modules/react/index.js","./components/Menu":"components/Menu.js","./components/CurrentWeather":"components/CurrentWeather.js","./components/LocationsSearch":"components/LocationsSearch.js","./components/WeatherInFiveDays":"components/WeatherInFiveDays.js","./components/Highlights":"components/Highlights.js"}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -37016,7 +37038,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58648" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49919" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

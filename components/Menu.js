@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import ConversionDegreeType from './ConversionDgreeTYpe';
+import LocationsSearch from './LocationsSearch';
 
 const MenuContainerStyles = styled.div`
 display: flex;
@@ -23,13 +24,13 @@ justify-content: space-between;
 function Menu() {
   return (
     <MenuContainerStyles>
+      <input type="checkbox" name="checkbox" id="checkbox" className="input_search_checkbox" />
         <div>
-            <input type="checkbox" name="checkbox" id="checkbox" className="input_search_checkbox" />
                 <label htmlFor="checkbox">
                     <span className="btn-search">Search for places</span>
                 </label>
         </div>
-
+        <LocationsSearch />
     <ConversionDegreeType />
     </MenuContainerStyles>
   )

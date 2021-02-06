@@ -16,7 +16,6 @@ export default function App () {
     <main>
       <section>
         <CurrentWeather />
-        <LocationsSearch />
       </section>
       <section>
         <WeatherInFiveDays />
