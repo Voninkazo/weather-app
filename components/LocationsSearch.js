@@ -21,14 +21,16 @@ export default function LocationsSearch() {
   const {state,dispatch} = useContext(GlobalContext);
   const {weatherLocations} = state;
   const [input,setInput] = useState('');
- 
+  
   function handleSearchForLocation(e) {
     e.preventDefault()
     dispatch({type: "FETCH_LOCATION", chosenLocation: input })
+    dispatch({type:"SHOW_SEARCH_FORM", show: false})
     e.target.reset();
   }
   return (
       <div className="search-container">
+        <div className="wrapper">
             <label htmlFor="checkbox" className="closing-label">
                 <span className="icon__close">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" fill="#E7E7EB" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>                
@@ -44,7 +46,7 @@ export default function LocationsSearch() {
                />
               <button type="submit" >search</button>
             </form>
-            {weatherLocations.length !== 0
+            {/* {weatherLocations.length !== 0
             ? weatherLocations.map((location, index) => 
             <div key={index}>
               <LocationsStyles>
@@ -56,7 +58,8 @@ export default function LocationsSearch() {
             <div >
               <p>Loading...</p>
             </div>
-        }
+        } */}
+        </div>
         </div>
   )
 }

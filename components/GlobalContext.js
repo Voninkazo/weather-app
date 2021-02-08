@@ -34,6 +34,13 @@ function GlobalContextProvider({children}) {
                     tempDegreeType: action.updatedDgree
                 }
             }
+
+            case "SHOW_SEARCH_FORM": {
+                return {
+                    ...state,
+                    showModal: action.show,
+                }
+            }
             default: {
                 return state;
             }
@@ -44,6 +51,7 @@ function GlobalContextProvider({children}) {
         weatherLocations: [],
         weatherObject: [],
         tempDegreeType: "celsius",
+        showModal: false,
     })
 
     let {location} = state;

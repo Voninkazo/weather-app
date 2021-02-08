@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import ConversionDegreeType from './ConversionDgreeTYpe';
+import { GlobalContext } from './GlobalContext';
 import LocationsSearch from './LocationsSearch';
 
 const MenuContainerStyles = styled.div`
@@ -22,15 +23,24 @@ justify-content: space-between;
 `
 
 function Menu() {
+  const {state,dispatch} = useContext(GlobalContext);
+  const {showModal, loading} = state;
+
+  function handleShowModal() {
+    dispatch({type:"SHOW_SEARCH_FORM", show:true})
+  }
+
   return (
     <MenuContainerStyles>
       <input type="checkbox" name="checkbox" id="checkbox" className="input_search_checkbox" />
         <div>
                 <label htmlFor="checkbox">
-                    <span className="btn-search">Search for places</span>
+                    <span className="btn-search" onClick={handleShowModal}>Search for places</span>
                 </label>
         </div>
-        <LocationsSearch />
+          {
+            showModal && <LocationsSearch />
+          }
     <ConversionDegreeType />
     </MenuContainerStyles>
   )
